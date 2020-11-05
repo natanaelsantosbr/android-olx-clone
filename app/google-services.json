@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "293406823466",
+    "firebase_url": "https://bomnegocio-92610.firebaseio.com",
+    "project_id": "bomnegocio-92610",
+    "storage_bucket": "bomnegocio-92610.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:293406823466:android:d39c4c87d6d314b2311f53",
+        "android_client_info": {
+          "package_name": "br.natanael.android.olx"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "293406823466-pqc3r9e5qlj5673ih3640v6fr7amlqei.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "br.natanael.android.olx",
+            "certificate_hash": "d67204a9d20f0dcf9b33eaf54df140347616dbad"
+          }
+        },
+        {
+          "client_id": "293406823466-11009trd9ddacp7upmv05ci3u0hoo78j.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAer9Zk_9XDRvDJWBzvJzGeznl_eQXdxL4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "293406823466-11009trd9ddacp7upmv05ci3u0hoo78j.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
