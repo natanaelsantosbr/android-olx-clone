@@ -6,7 +6,7 @@ android {
     buildToolsVersion "30.0.0"
     defaultConfig {
         applicationId "br.natanael.android.olx"
-        minSdkVersion 15
+        minSdkVersion 16
         targetSdkVersion 29
         versionCode 1
         versionName "1.0"
@@ -30,4 +30,20 @@ dependencies {
 
     //Firebase
     implementation platform('com.google.firebase:firebase-bom:26.0.0')
+
+    implementation 'com.google.firebase:firebase-core:15.0.0'
+
+    //Realtime database
+    implementation  'com.google.firebase:firebase-database:15.0.0'
+
+    //Storage
+    implementation  'com.google.firebase:firebase-storage:15.0.0'
+
+    //Auth
+    implementation 'com.google.firebase:firebase-auth:15.0.0'
+
+    //
+
+
+
 }
