@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ProgressBar;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -27,6 +28,7 @@ public class CadastroActivity extends AppCompatActivity {
     private Button buttonAcesso;
     private TextView editCadastroEmail,editCadastroSenha;
     private Switch switchAcesso;
+    private ProgressBar progressBar;
 
     private FirebaseAuth autenticacao;
 
@@ -48,6 +50,8 @@ public class CadastroActivity extends AppCompatActivity {
                 {
                     if(!senha.isEmpty())
                     {
+                        progressBar.setVisibility(View.VISIBLE);
+
                         if(switchAcesso.isChecked())
                         {
                             //Cadastro
@@ -82,8 +86,8 @@ public class CadastroActivity extends AppCompatActivity {
 
                                         Toast.makeText(CadastroActivity.this, "Erro: " + erroExcecao, Toast.LENGTH_SHORT).show();
                                         startActivity(new Intent(getApplicationContext(), AnunciosActivity.class));
-
                                     }
+                                    progressBar.setVisibility(View.GONE);
 
                                 }
                             });
@@ -92,6 +96,7 @@ public class CadastroActivity extends AppCompatActivity {
                         }
                         else
                         {
+
                             //Login
                             autenticacao.signInWithEmailAndPassword(email, senha).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                                 @Override
@@ -100,11 +105,13 @@ public class CadastroActivity extends AppCompatActivity {
                                     {
                                         Toast.makeText(CadastroActivity.this, "Logado com sucesso", Toast.LENGTH_SHORT).show();
                                         startActivity(new Intent(getApplicationContext(), AnunciosActivity.class));
+
                                     }
                                     else
                                     {
                                         Toast.makeText(CadastroActivity.this, "Erro ao logar: " + task.getException(), Toast.LENGTH_SHORT).show();
                                     }
+                                    progressBar.setVisibility(View.GONE);
 
                                 }
                             });
@@ -120,8 +127,8 @@ public class CadastroActivity extends AppCompatActivity {
                 {
                     Toast.makeText(CadastroActivity.this, "Preencha o E-mail", Toast.LENGTH_SHORT).show();
                 }
-                    
-                
+
+
             }
         });
                 
@@ -136,5 +143,7 @@ public class CadastroActivity extends AppCompatActivity {
         editCadastroEmail = findViewById(R.id.editCadastroEmail);
         editCadastroSenha  = findViewById(R.id.editCadastroSenha);
         switchAcesso = findViewById(R.id.switchAcesso);
+        progressBar = findViewById(R.id.progressBarCadastrarOuLogar);
+        progressBar.setVisibility(View.GONE);
     }
 }

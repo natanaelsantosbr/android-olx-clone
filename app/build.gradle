@@ -43,7 +43,10 @@ dependencies {
     //Auth
     implementation 'com.google.firebase:firebase-auth:15.0.0'
 
-    //
+    //Mascara de Moeda
+    implementation 'com.github.BlacKCaT27:CurrencyEditText:2.0.2'
+
+
 
 
 }

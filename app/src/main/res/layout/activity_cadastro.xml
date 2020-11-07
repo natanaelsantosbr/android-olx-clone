@@ -74,4 +74,11 @@
         android:text="Acessar"
         android:theme="@style/botaoPadrao" />
 
+    <ProgressBar
+        android:id="@+id/progressBarCadastrarOuLogar"
+        style="?android:attr/progressBarStyle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp" />
+
 </LinearLayout>
