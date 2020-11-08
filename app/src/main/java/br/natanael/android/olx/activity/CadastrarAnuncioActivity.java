@@ -7,6 +7,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.Manifest;
 import android.app.Activity;
+import android.bluetooth.le.AdvertiseData;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -15,9 +16,11 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Spinner;
 
 import com.blackcat.currencyedittext.CurrencyEditText;
 import com.santalu.maskara.widget.MaskEditText;
@@ -37,6 +40,8 @@ public class CadastrarAnuncioActivity extends AppCompatActivity implements View.
     private MaskEditText editTelefone;
     private ImageView imageCadastro1, imageCadastro2,imageCadastro3;
     private List<String> listaFotosRecuperadas = new ArrayList<>();
+    private Spinner spinnerEstado, spinnerCategoria;
+
 
     private String[] permissoes = new String[] {
             Manifest.permission.INTERNET,
@@ -52,6 +57,23 @@ public class CadastrarAnuncioActivity extends AppCompatActivity implements View.
         Permissoes.validarPermissoes(permissoes, this, 1);
 
         inicializarComponentes();
+
+        carregarDadosSpinner();
+    }
+
+    private void carregarDadosSpinner() {
+        String[] estados = getResources().getStringArray(R.array.estados);
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,android.R.layout.simple_spinner_item, estados);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinnerEstado.setAdapter(adapter);
+
+        String[] categoria = getResources().getStringArray(R.array.categoria);
+        ArrayAdapter<String> adapterCategoria = new ArrayAdapter<String>(this,android.R.layout.simple_spinner_item, categoria);
+        adapterCategoria.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinnerCategoria.setAdapter(adapterCategoria);
+
+
+
     }
 
     private void inicializarComponentes() {
@@ -63,6 +85,8 @@ public class CadastrarAnuncioActivity extends AppCompatActivity implements View.
         imageCadastro1 = findViewById(R.id.imageCadastro1);
         imageCadastro2 = findViewById(R.id.imageCadastro2);
         imageCadastro3 = findViewById(R.id.imageCadastro3);
+        spinnerEstado = findViewById(R.id.spinnerEstado);
+        spinnerCategoria = findViewById(R.id.spinnerCategoria);
 
         imageCadastro1.setOnClickListener(this);
         imageCadastro2.setOnClickListener(this);
