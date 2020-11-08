@@ -11,6 +11,7 @@ import android.bluetooth.le.AdvertiseData;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.icu.lang.UProperty;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -24,6 +25,13 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.blackcat.currencyedittext.CurrencyEditText;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 import com.santalu.maskara.widget.MaskEditText;
 
 import java.text.DecimalFormat;
@@ -32,6 +40,7 @@ import java.util.List;
 import java.util.Locale;
 
 import br.natanael.android.olx.R;
+import br.natanael.android.olx.helper.ConfiguracaoFirebase;
 import br.natanael.android.olx.helper.Permissoes;
 import br.natanael.android.olx.model.Anuncio;
 
@@ -42,6 +51,7 @@ public class CadastrarAnuncioActivity extends AppCompatActivity implements View.
     private MaskEditText editTelefone;
     private ImageView imageCadastro1, imageCadastro2,imageCadastro3;
     private List<String> listaFotosRecuperadas = new ArrayList<>();
+    private List<String> listaURLFotos = new ArrayList<>();
     private Spinner spinnerEstado, spinnerCategoria;
     private Anuncio anuncio;
 
@@ -52,6 +62,9 @@ public class CadastrarAnuncioActivity extends AppCompatActivity implements View.
             Manifest.permission.READ_EXTERNAL_STORAGE
     };
 
+
+    private StorageReference storage;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -59,9 +72,16 @@ public class CadastrarAnuncioActivity extends AppCompatActivity implements View.
 
         Permissoes.validarPermissoes(permissoes, this, 1);
 
+
+        configuracoesInicias();
+
         inicializarComponentes();
 
         carregarDadosSpinner();
+    }
+
+    private void configuracoesInicias() {
+        storage = ConfiguracaoFirebase.getFirebaseStorage();
     }
 
     private void carregarDadosSpinner() {
@@ -163,7 +183,40 @@ public class CadastrarAnuncioActivity extends AppCompatActivity implements View.
         }
     }
 
-    private void salvarFotoStorage(String urlImagem, int tamanhoDaLista, int i) {
+    private void salvarFotoStorage(String urlImagem, final int totalDeFotos, int i) {
+
+        final StorageReference imagemRef = storage.child("imagens")
+                .child("anuncios")
+                .child(anuncio.getIdAnuncio())
+                .child("imagem"+i);
+
+
+        UploadTask uploadTask = imagemRef.putFile(Uri.parse(urlImagem));
+        uploadTask.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+            @Override
+            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                imagemRef.getDownloadUrl().addOnCompleteListener(new OnCompleteListener<Uri>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Uri> task) {
+                        String urlConvetida = task.getResult().toString();
+                        listaURLFotos.add(urlConvetida);
+
+                        if(totalDeFotos == listaURLFotos.size()){
+                            anuncio.setFotos(listaURLFotos);
+                            anuncio.salvar();
+                        }
+                    }
+                });
+
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                exibirMensagemErro("Falha ao fazer upload");
+                e.printStackTrace();
+
+            }
+        });
 
     }
 

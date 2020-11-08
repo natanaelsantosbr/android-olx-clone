@@ -1,6 +1,10 @@
 package br.natanael.android.olx.model;
 
+import com.google.firebase.database.DatabaseReference;
+
 import java.util.List;
+
+import br.natanael.android.olx.helper.ConfiguracaoFirebase;
 
 public class Anuncio {
     private String idAnuncio;
@@ -13,6 +17,22 @@ public class Anuncio {
     private List<String> fotos;
 
     public Anuncio() {
+        DatabaseReference anuncioRef = ConfiguracaoFirebase.getFirebase()
+                .child("meusanuncios");
+
+        setIdAnuncio(anuncioRef.push().getKey());
+    }
+
+    public void salvar() {
+        String idUsuario =ConfiguracaoFirebase.getIdUsuario();
+
+        DatabaseReference anuncioRef = ConfiguracaoFirebase.getFirebase()
+                .child("meusanuncios");
+
+        anuncioRef
+                .child(idUsuario)
+                .child(getIdAnuncio())
+                .setValue(this);
     }
 
     public String getIdAnuncio() {
