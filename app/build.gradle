@@ -46,6 +46,8 @@ dependencies {
     //Mascara de Moeda
     implementation 'com.github.BlacKCaT27:CurrencyEditText:2.0.2'
 
+    //Mascara de Telefone
+    implementation 'com.github.santalu:maskara:1.0.0'
 
 
 
