@@ -2,11 +2,11 @@ package br.natanael.android.olx.activity;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.Manifest;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.bluetooth.le.AdvertiseData;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -43,6 +43,7 @@ import br.natanael.android.olx.R;
 import br.natanael.android.olx.helper.ConfiguracaoFirebase;
 import br.natanael.android.olx.helper.Permissoes;
 import br.natanael.android.olx.model.Anuncio;
+import dmax.dialog.SpotsDialog;
 
 public class CadastrarAnuncioActivity extends AppCompatActivity implements View.OnClickListener {
     private EditText editTitulo,editDescricao;
@@ -54,6 +55,7 @@ public class CadastrarAnuncioActivity extends AppCompatActivity implements View.
     private List<String> listaURLFotos = new ArrayList<>();
     private Spinner spinnerEstado, spinnerCategoria;
     private Anuncio anuncio;
+    private AlertDialog dialog;
 
 
     private String[] permissoes = new String[] {
@@ -121,7 +123,7 @@ public class CadastrarAnuncioActivity extends AppCompatActivity implements View.
 
     public void  validarDadosAnuncio(View view) {
         anuncio = configurarAnuncio();
-
+        String valor = String.valueOf(editValor.getRawValue());
         String fone = "";
 
         if(editTelefone.getUnMasked() != null)
@@ -135,7 +137,7 @@ public class CadastrarAnuncioActivity extends AppCompatActivity implements View.
                 {
                     if(!anuncio.getTitulo().isEmpty())
                     {
-                        if(!anuncio.getValor().isEmpty() & !anuncio.getValor().equals("0"))
+                        if(!valor.isEmpty() & !valor.equals("0"))
                         {
                             if(!anuncio.getTelefone().isEmpty() && fone.length() >=10)
                             {
@@ -170,6 +172,14 @@ public class CadastrarAnuncioActivity extends AppCompatActivity implements View.
     }
 
     public void salvarAnuncio(){
+        dialog = new SpotsDialog.Builder()
+                .setContext(this)
+                .setMessage("Salvando Anúncios")
+                .setCancelable(false)
+                .build();
+
+        dialog.show();
+
         int tamanhoDaLista = listaFotosRecuperadas.size();
 
         for (int i = 0; i < listaFotosRecuperadas.size(); i++)
@@ -177,10 +187,8 @@ public class CadastrarAnuncioActivity extends AppCompatActivity implements View.
             String urlImagem = listaFotosRecuperadas.get(i);
 
             salvarFotoStorage(urlImagem, tamanhoDaLista, i );
-
-
-
         }
+
     }
 
     private void salvarFotoStorage(String urlImagem, final int totalDeFotos, int i) {
@@ -204,6 +212,8 @@ public class CadastrarAnuncioActivity extends AppCompatActivity implements View.
                         if(totalDeFotos == listaURLFotos.size()){
                             anuncio.setFotos(listaURLFotos);
                             anuncio.salvar();
+                            dialog.dismiss();
+                            finish();
                         }
                     }
                 });
@@ -224,7 +234,7 @@ public class CadastrarAnuncioActivity extends AppCompatActivity implements View.
         String estado = spinnerEstado.getSelectedItem().toString();
         String categoria = spinnerCategoria.getSelectedItem().toString();
         String titulo = editTitulo.getText().toString();
-        String valor = String.valueOf(editValor.getRawValue());
+        String valor = editValor.getText().toString();
         String telefone = editTelefone.getText().toString();
         String descricao = editDescricao.getText().toString();
 
