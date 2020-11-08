@@ -21,6 +21,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import com.blackcat.currencyedittext.CurrencyEditText;
 import com.santalu.maskara.widget.MaskEditText;
@@ -96,9 +97,86 @@ public class CadastrarAnuncioActivity extends AppCompatActivity implements View.
         editValor.setLocale(locale);
     }
 
-    public void salvarAnuncio(View view){
+    public void  validarDadosAnuncio(View view) {
+        String estado = spinnerEstado.getSelectedItem().toString();
+        String categoria = spinnerCategoria.getSelectedItem().toString();
+        String titulo = editTitulo.getText().toString();
+        String valor = String.valueOf(editValor.getRawValue());
+        String telefone = editTelefone.getText().toString();
+
+        String fone = "";
+
+        if(editTelefone.getUnMasked() != null)
+            fone = editTelefone.getUnMasked();
+
+        String descricao = editDescricao.getText().toString();
+
+        if(listaFotosRecuperadas.size() != 0)
+        {
+            if(!estado.isEmpty() && !estado.equals("Estado"))
+            {
+                if(!categoria.isEmpty() && !categoria.equals("Categoria"))
+                {
+                    if(!titulo.isEmpty())
+                    {
+                        if(!valor.isEmpty() & !valor.equals("0"))
+                        {
+                            if(!telefone.isEmpty() && fone.length() >=10)
+                            {
+                                if(!descricao.isEmpty())
+                                {
+                                    salvarAnuncio();
+                                }
+                                else
+                                {
+                                    exibirMensagemErro("Preencha o campo Descrição");
+                                }
+
+                            }
+                            else
+                            {
+                                exibirMensagemErro("Preencha o campo Telefone, digite no minimo 10 caracteres");
+                            }
+
+                        }
+                        else
+                            exibirMensagemErro("Preencha o campo valor!");
+
+                    }
+                    else
+                    {
+                        exibirMensagemErro("Preencha o campo Titulo");
+                    }
+
+
+
+                }
+                else
+                    exibirMensagemErro("Preencha o campo Categoria!");
+
+            }
+            else
+            {
+                exibirMensagemErro("Preencha o campo estado!");
+            }
+
+        }
+        else
+        {
+            exibirMensagemErro("Selecione ao menos uma foto!");
+        }
 
     }
+
+    private void exibirMensagemErro(String mensagem ){
+        Toast.makeText(this, mensagem, Toast.LENGTH_SHORT).show();
+    }
+
+    public void salvarAnuncio(){
+
+    }
+
+
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {

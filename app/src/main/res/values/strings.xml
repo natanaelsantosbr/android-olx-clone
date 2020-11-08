@@ -3,6 +3,7 @@
     <string name="title_activity_meus_anuncios">Meus anúncios</string>
 
     <string-array name="estados">
+        <item>Estado</item>
         <item>AC</item>
         <item>AL</item>
         <item>AM</item>
@@ -33,6 +34,7 @@
     </string-array>
 
     <string-array name="categoria">
+        <item>Categoria</item>
         <item>Automóveis</item>
         <item>Imóveis</item>
         <item>Eletronicos</item>
