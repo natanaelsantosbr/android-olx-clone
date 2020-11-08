@@ -33,6 +33,7 @@ import java.util.Locale;
 
 import br.natanael.android.olx.R;
 import br.natanael.android.olx.helper.Permissoes;
+import br.natanael.android.olx.model.Anuncio;
 
 public class CadastrarAnuncioActivity extends AppCompatActivity implements View.OnClickListener {
     private EditText editTitulo,editDescricao;
@@ -42,6 +43,7 @@ public class CadastrarAnuncioActivity extends AppCompatActivity implements View.
     private ImageView imageCadastro1, imageCadastro2,imageCadastro3;
     private List<String> listaFotosRecuperadas = new ArrayList<>();
     private Spinner spinnerEstado, spinnerCategoria;
+    private Anuncio anuncio;
 
 
     private String[] permissoes = new String[] {
@@ -98,74 +100,49 @@ public class CadastrarAnuncioActivity extends AppCompatActivity implements View.
     }
 
     public void  validarDadosAnuncio(View view) {
-        String estado = spinnerEstado.getSelectedItem().toString();
-        String categoria = spinnerCategoria.getSelectedItem().toString();
-        String titulo = editTitulo.getText().toString();
-        String valor = String.valueOf(editValor.getRawValue());
-        String telefone = editTelefone.getText().toString();
+        anuncio = configurarAnuncio();
 
         String fone = "";
 
         if(editTelefone.getUnMasked() != null)
             fone = editTelefone.getUnMasked();
 
-        String descricao = editDescricao.getText().toString();
-
         if(listaFotosRecuperadas.size() != 0)
         {
-            if(!estado.isEmpty() && !estado.equals("Estado"))
+            if(!anuncio.getEstado().isEmpty() && !anuncio.getEstado().equals("Estado"))
             {
-                if(!categoria.isEmpty() && !categoria.equals("Categoria"))
+                if(!anuncio.getCategoria().isEmpty() && !anuncio.getCategoria().equals("Categoria"))
                 {
-                    if(!titulo.isEmpty())
+                    if(!anuncio.getTitulo().isEmpty())
                     {
-                        if(!valor.isEmpty() & !valor.equals("0"))
+                        if(!anuncio.getValor().isEmpty() & !anuncio.getValor().equals("0"))
                         {
-                            if(!telefone.isEmpty() && fone.length() >=10)
+                            if(!anuncio.getTelefone().isEmpty() && fone.length() >=10)
                             {
-                                if(!descricao.isEmpty())
+                                if(!anuncio.getDescricao().isEmpty())
                                 {
                                     salvarAnuncio();
                                 }
                                 else
-                                {
                                     exibirMensagemErro("Preencha o campo Descrição");
-                                }
-
                             }
                             else
-                            {
                                 exibirMensagemErro("Preencha o campo Telefone, digite no minimo 10 caracteres");
-                            }
-
                         }
                         else
                             exibirMensagemErro("Preencha o campo valor!");
-
                     }
                     else
-                    {
                         exibirMensagemErro("Preencha o campo Titulo");
-                    }
-
-
-
                 }
                 else
                     exibirMensagemErro("Preencha o campo Categoria!");
-
             }
             else
-            {
                 exibirMensagemErro("Preencha o campo estado!");
-            }
-
         }
         else
-        {
             exibirMensagemErro("Selecione ao menos uma foto!");
-        }
-
     }
 
     private void exibirMensagemErro(String mensagem ){
@@ -173,7 +150,40 @@ public class CadastrarAnuncioActivity extends AppCompatActivity implements View.
     }
 
     public void salvarAnuncio(){
+        int tamanhoDaLista = listaFotosRecuperadas.size();
 
+        for (int i = 0; i < listaFotosRecuperadas.size(); i++)
+        {
+            String urlImagem = listaFotosRecuperadas.get(i);
+
+            salvarFotoStorage(urlImagem, tamanhoDaLista, i );
+
+
+
+        }
+    }
+
+    private void salvarFotoStorage(String urlImagem, int tamanhoDaLista, int i) {
+
+    }
+
+    private Anuncio configurarAnuncio() {
+        String estado = spinnerEstado.getSelectedItem().toString();
+        String categoria = spinnerCategoria.getSelectedItem().toString();
+        String titulo = editTitulo.getText().toString();
+        String valor = String.valueOf(editValor.getRawValue());
+        String telefone = editTelefone.getText().toString();
+        String descricao = editDescricao.getText().toString();
+
+        Anuncio anuncio = new Anuncio();
+        anuncio.setEstado(estado);
+        anuncio.setCategoria(categoria);
+        anuncio.setTitulo(titulo);
+        anuncio.setValor(valor);
+        anuncio.setTelefone(telefone);
+        anuncio.setDescricao(descricao);
+
+        return  anuncio;
     }
 
 
