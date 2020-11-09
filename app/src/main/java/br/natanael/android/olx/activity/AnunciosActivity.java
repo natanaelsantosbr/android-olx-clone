@@ -13,6 +13,7 @@ import android.provider.ContactsContract;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
@@ -23,7 +24,9 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.internal.InternalTokenProvider;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -31,6 +34,7 @@ import java.util.List;
 import br.natanael.android.olx.R;
 import br.natanael.android.olx.adapter.AdapterAnuncios;
 import br.natanael.android.olx.helper.ConfiguracaoFirebase;
+import br.natanael.android.olx.helper.RecyclerItemClickListener;
 import br.natanael.android.olx.model.Anuncio;
 import dmax.dialog.SpotsDialog;
 
@@ -67,6 +71,26 @@ public class AnunciosActivity extends AppCompatActivity {
         recyclerAnunciosPublicos.setAdapter(adapterAnuncios);
 
         recuperarAnunciosPublicos();
+
+        recyclerAnunciosPublicos.addOnItemTouchListener(new RecyclerItemClickListener(this, recyclerAnunciosPublicos, new RecyclerItemClickListener.OnItemClickListener() {
+            @Override
+            public void onItemClick(View view, int position) {
+                Anuncio anuncioSelecionado = listaAnuncios.get(position);
+                Intent i = new Intent(AnunciosActivity.this, DetalhesProdutoActivity.class);
+                i.putExtra("anuncioSelecionado", anuncioSelecionado);
+                startActivity(i);
+            }
+
+            @Override
+            public void onLongItemClick(View view, int position) {
+
+            }
+
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+            }
+        }));
     }
 
     public void recuperarAnunciosPublicos() {
