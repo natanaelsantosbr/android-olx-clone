@@ -1,5 +1,5 @@
 # android-olx-clone
-Clonar as principais funcionalidades para aprendizado sobre android 
+Clonar as principais funcionalidades do app OLX para aprendizado sobre android 
 
 <img src="https://user-images.githubusercontent.com/21367563/98499520-83c9aa80-2228-11eb-99ad-1eb7b1440add.png"/>
 
